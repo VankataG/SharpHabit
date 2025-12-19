@@ -22,11 +22,28 @@
             <ItemsControl ItemsSource="{Binding Habits}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <DockPanel Margin="0.6">
-                            <CheckBox IsChecked="{Binding IsDoneToday}" Margin="0,0,12,0"/>
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="16"/>
-                        </DockPanel>
+                        <Border Padding="8" CornerRadius="6">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#1E1E1E"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDoneToday}" Value="True">
+                                            <Setter Property="Background" Value="#2E7D32"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <DockPanel>
+                                <CheckBox IsChecked="{Binding IsDoneToday}" Margin="0,0,12,0"/>
+                                <TextBlock Text="{Binding Name}"
+                       VerticalAlignment="Center"
+                       FontSize="16"
+                       Foreground="White"/>
+                            </DockPanel>
+                        </Border>
                     </DataTemplate>
+
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <Button Content="Add Habit" Command="{Binding AddHabitCommand}" Width="120" Margin="0,0,0,12"/>
