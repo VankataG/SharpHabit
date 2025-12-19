@@ -8,7 +8,23 @@ namespace SharpHabit.Wpf.ViewModels
     {
         public ObservableCollection<HabitItemViewModel> Habits { get; } = new();
 
-        public ICommand AddHabitCommand { get; }
+
+        private readonly RelayCommand addHabitCommand;
+        public ICommand AddHabitCommand => addHabitCommand;
+
+        private string newHabitName = "";
+
+        public string NewHabitName 
+        {
+            get => newHabitName;
+            set 
+            {
+                if (SetField(ref newHabitName, value))
+                {
+                    (AddHabitCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public MainViewModel()
         {
@@ -16,15 +32,22 @@ namespace SharpHabit.Wpf.ViewModels
             Habits.Add(new HabitItemViewModel { Name = "Code" });
             Habits.Add(new HabitItemViewModel { Name = "Creatine" });
 
-            AddHabitCommand = new RelayCommand(AddHabit, () => Habits.Count < 5);
+            addHabitCommand = new RelayCommand(AddHabit, CanAddHabit);
         }
 
         private void AddHabit()
         {
             Habits.Add(new HabitItemViewModel
             {
-                Name = "New habit",
+                Name = this.newHabitName.Trim(),
             });
+
+            this.newHabitName = "";
+        }
+
+        private bool CanAddHabit()
+        {
+            return !string.IsNullOrWhiteSpace(newHabitName);
         }
     }
 }
