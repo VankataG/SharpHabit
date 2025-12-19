@@ -19,6 +19,20 @@
         <StackPanel>
             <TextBlock Text="Today" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,12"/>
 
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBox 
+                    Width="260"
+                    Margin="0,0,12,0"
+                    Text="{Binding NewHabitName, UpdateSourceTrigger=PropertyChanged}" 
+                />
+
+                <Button 
+                    Content="Add Habit"
+                    Width="120"
+                    Command="{Binding AddHabitCommand}" 
+                />
+            </StackPanel>
+
             <ItemsControl ItemsSource="{Binding Habits}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -46,7 +60,7 @@
 
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Content="Add Habit" Command="{Binding AddHabitCommand}" Width="120" Margin="0,0,0,12"/>
+            
         </StackPanel>
     </Grid>
 </Window>
