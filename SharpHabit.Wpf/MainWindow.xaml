@@ -29,6 +29,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+            <Button Content="Add Habit" Command="{Binding AddHabitCommand}" Width="120" Margin="0,0,0,12"/>
         </StackPanel>
     </Grid>
 </Window>
