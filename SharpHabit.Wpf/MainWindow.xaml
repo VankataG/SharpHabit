@@ -87,7 +87,12 @@
                             </Border.Style>
 
                             <DockPanel>
-                                <CheckBox IsChecked="{Binding IsDoneToday}" Margin="0,0,12,0"/>
+                                <CheckBox 
+                                    IsChecked="{Binding IsDoneToday}" 
+                                    Margin="0,0,12,0"
+                                    Command="{Binding DataContext.HabitToggledCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}"
+                                />
                                 <TextBlock 
                                     Text="{Binding Name}"
                                     VerticalAlignment="Center"

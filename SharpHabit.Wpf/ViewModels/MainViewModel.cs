@@ -9,6 +9,7 @@ namespace SharpHabit.Wpf.ViewModels
     {
         public ObservableCollection<HabitItemViewModel> Habits { get; } = new();
 
+
         public int TotalHabits => Habits.Count;
         public int DoneHabits => Habits.Count(h => h.IsDoneToday);
         public double CompletionPercent
@@ -23,6 +24,12 @@ namespace SharpHabit.Wpf.ViewModels
 
         private readonly RelayCommand refreshStatsCommand;
         public ICommand RefreshStatsCommand => refreshStatsCommand;
+
+
+
+        private readonly RelayCommand<HabitItemViewModel> habitToggledCommand;
+        public ICommand HabitToggledCommand => habitToggledCommand;
+
 
 
         private readonly RelayCommand addHabitCommand;
@@ -49,6 +56,7 @@ namespace SharpHabit.Wpf.ViewModels
 
             addHabitCommand = new RelayCommand(AddHabit, CanAddHabit);
             refreshStatsCommand = new RelayCommand(RefreshStats);
+            habitToggledCommand = new RelayCommand<HabitItemViewModel>( _ => RefreshStats());
         }
 
         private void RefreshStats()

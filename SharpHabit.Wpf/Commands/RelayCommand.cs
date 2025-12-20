@@ -2,7 +2,7 @@
 
 namespace SharpHabit.Wpf.Commands
 {
-    internal class RelayCommand : ICommand
+    public class RelayCommand : ICommand
     {
         private readonly Action execute;
 
