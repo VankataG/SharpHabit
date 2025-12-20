@@ -19,6 +19,44 @@
         <StackPanel>
             <TextBlock Text="Today" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,12"/>
 
+            <Border Padding="12" CornerRadius="30" Margin="30" Background="DarkGreen">
+                <StackPanel>
+
+                    <!-- Top row: Done/Total and Refresh button -->
+                    <DockPanel LastChildFill="False" Margin="0,0,0,8">
+                        <TextBlock Foreground="White" FontSize="14" VerticalAlignment="Center">
+                            <Run Text="Done " />
+                            <Run Text="{Binding DoneHabits, Mode=OneWay}" />
+                            <Run Text=" / " />
+                            <Run Text="{Binding TotalHabits, Mode=OneWay}" />
+                        </TextBlock>
+
+                        <Button 
+                            Content="Refresh Stats"
+                            Command="{Binding RefreshStatsCommand}"
+                            Margin="12,0,0,0"
+                            DockPanel.Dock="Right"
+                        />
+                    </DockPanel>
+
+                    <!-- Progress bar -->
+                    <ProgressBar Height="16"
+                     Minimum="0" Maximum="100"
+                     Value="{Binding CompletionPercent, Mode=OneWay}" />
+
+                    <!-- Percentage text -->
+                    <TextBlock 
+                        Foreground="White"
+                        FontSize="14"
+                        Margin="0,8,0,0"
+                        Text="{Binding CompletionPercent, Mode=OneWay, StringFormat=Completion: {0:0}%}" 
+                    />
+
+
+                </StackPanel>
+            </Border>
+
+
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                 <TextBox 
                     Width="260"
@@ -50,10 +88,12 @@
 
                             <DockPanel>
                                 <CheckBox IsChecked="{Binding IsDoneToday}" Margin="0,0,12,0"/>
-                                <TextBlock Text="{Binding Name}"
-                       VerticalAlignment="Center"
-                       FontSize="16"
-                       Foreground="White"/>
+                                <TextBlock 
+                                    Text="{Binding Name}"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Foreground="White"
+                                />
                             </DockPanel>
                         </Border>
                     </DataTemplate>
