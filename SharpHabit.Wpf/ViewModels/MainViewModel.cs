@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using SharpHabit.Wpf.Commands;
+using System.Linq;
 
 namespace SharpHabit.Wpf.ViewModels
 {
@@ -8,12 +9,26 @@ namespace SharpHabit.Wpf.ViewModels
     {
         public ObservableCollection<HabitItemViewModel> Habits { get; } = new();
 
+        public int TotalHabits => Habits.Count;
+        public int DoneHabits => Habits.Count(h => h.IsDoneToday);
+        public double CompletionPercent
+        {
+            get
+            {
+                if (TotalHabits == 0) return 0;
+                return (double)DoneHabits / TotalHabits * 100.0;
+            }
+        }
+
+
+        private readonly RelayCommand refreshStatsCommand;
+        public ICommand RefreshStatsCommand => refreshStatsCommand;
+
 
         private readonly RelayCommand addHabitCommand;
         public ICommand AddHabitCommand => addHabitCommand;
 
         private string newHabitName = "";
-
         public string NewHabitName 
         {
             get => newHabitName;
@@ -21,7 +36,7 @@ namespace SharpHabit.Wpf.ViewModels
             {
                 if (SetField(ref newHabitName, value))
                 {
-                    (AddHabitCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                    addHabitCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -33,7 +48,16 @@ namespace SharpHabit.Wpf.ViewModels
             Habits.Add(new HabitItemViewModel { Name = "Creatine" });
 
             addHabitCommand = new RelayCommand(AddHabit, CanAddHabit);
+            refreshStatsCommand = new RelayCommand(RefreshStats);
         }
+
+        private void RefreshStats()
+        {
+            OnPropertyChange(nameof(TotalHabits));
+            OnPropertyChange(nameof(DoneHabits));
+            OnPropertyChange(nameof(CompletionPercent));
+        }
+
 
         private void AddHabit()
         {
@@ -42,7 +66,7 @@ namespace SharpHabit.Wpf.ViewModels
                 Name = this.newHabitName.Trim(),
             });
 
-            this.newHabitName = "";
+            NewHabitName = "";
         }
 
         private bool CanAddHabit()
