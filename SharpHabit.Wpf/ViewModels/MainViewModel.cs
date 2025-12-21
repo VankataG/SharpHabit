@@ -48,6 +48,17 @@ namespace SharpHabit.Wpf.ViewModels
             }
         }
 
+
+
+        public ObservableCollection<int> MonthDays { get; } = new();
+        public ObservableCollection<HabitMonthRowViewModel> MonthRows { get; } = new();
+
+
+
+        private readonly RelayCommand<HabitDayCellViewModel> toggleCellCommand;
+        public ICommand ToggleCellCommand => toggleCellCommand;
+    
+
         public MainViewModel()
         {
             Habits.Add(new HabitItemViewModel { Name = "Wokout" });
@@ -57,7 +68,37 @@ namespace SharpHabit.Wpf.ViewModels
             addHabitCommand = new RelayCommand(AddHabit, CanAddHabit);
             refreshStatsCommand = new RelayCommand(RefreshStats);
             habitToggledCommand = new RelayCommand<HabitItemViewModel>( _ => RefreshStats());
+            toggleCellCommand = new RelayCommand<HabitDayCellViewModel>(ToggleCell);
+
+
+            BuildMonthView();
         }
+
+        private void BuildMonthView()
+        {
+            MonthDays.Clear();
+            MonthRows.Clear();
+
+            var current = DateTime.Now;
+            int daysInMonth = DateTime.DaysInMonth(current.Year, current.Month);
+
+            for (int day = 1;  day <= daysInMonth; day++)
+            {
+                MonthDays.Add(day);
+            }
+
+            foreach (var habit in Habits)
+            {
+                MonthRows.Add(new HabitMonthRowViewModel(habit.Name, daysInMonth));
+            }
+        }
+
+        private void ToggleCell(HabitDayCellViewModel? cell)
+        {
+            if (cell == null) return;
+            cell.IsDone = !cell.IsDone;
+        }
+
 
         private void RefreshStats()
         {
