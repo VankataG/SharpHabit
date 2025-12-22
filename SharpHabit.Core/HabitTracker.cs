@@ -113,6 +113,22 @@ namespace SharpHabit.Core
             return (double)done / daysInMonth * 100.0;
         }
 
+        public IEnumerable<int> GetDoneDays(Guid habitId, int year, int month)
+        {
+            List<int> doneDays = new List<int>();
+
+            int daysInMonth = DateTime.DaysInMonth(year, month);
+
+            for (int day = 1; day <= daysInMonth; day++)
+            {
+                DateOnly date = new DateOnly(year, month, day);
+
+                if (IsDone(habitId, date)) doneDays.Add(day);
+            }
+
+            return doneDays;
+        }
+
 
         private bool CheckForHabits()
         {
