@@ -14,15 +14,16 @@ namespace SharpHabit.Playground
 
             Habit study = tracker.AddHabit("Study");
             Habit workout = tracker.AddHabit("Workout");
+            Habit shower = tracker.AddHabit("Cold shower");
 
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
 
-            var toggled = tracker.Toggle(study.Id, today);
-            tracker.Toggle(workout.Id, today);
+            tracker.Toggle(study.Id, today);
+            //tracker.Toggle(workout.Id, today);
+            //tracker.Toggle(shower.Id, today);
 
-            Console.WriteLine(toggled);
 
-            Console.WriteLine($"Done today: {tracker.DayPercentage(today)}%");
+            Console.WriteLine($"Done today: {tracker.DayPercentage(today):f2}%");
             Console.WriteLine($"Month: {tracker.MonthPercentage(today.Year, today.Month):f2}%");
         }
     }
