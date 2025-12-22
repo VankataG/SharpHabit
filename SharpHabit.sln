@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36511.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpHabit.Wpf", "SharpHabit.Wpf\SharpHabit.Wpf.csproj", "{37EAAED3-5571-4E07-814C-039BF434A1DB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpHabit.Core", "SharpHabit.Core\SharpHabit.Core.csproj", "{66EF20F4-D34A-46AC-9AD5-4CD33740C8C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpHabit.Infrastructure", "SharpHabit.Infrastructure\SharpHabit.Infrastructure.csproj", "{F5F18AA5-4A99-414C-AAB5-D537422B734E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpHabit.Playground", "SharpHabit.Playground\SharpHabit.Playground.csproj", "{160A9F4F-E1B1-49EE-BFA7-9D50087C9680}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpHabit.Wpf", "SharpHabit.Wpf\SharpHabit.Wpf.csproj", "{04971C76-1CC7-4697-831F-0469BF9FF3C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{37EAAED3-5571-4E07-814C-039BF434A1DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37EAAED3-5571-4E07-814C-039BF434A1DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37EAAED3-5571-4E07-814C-039BF434A1DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37EAAED3-5571-4E07-814C-039BF434A1DB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{66EF20F4-D34A-46AC-9AD5-4CD33740C8C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{66EF20F4-D34A-46AC-9AD5-4CD33740C8C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66EF20F4-D34A-46AC-9AD5-4CD33740C8C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{160A9F4F-E1B1-49EE-BFA7-9D50087C9680}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{160A9F4F-E1B1-49EE-BFA7-9D50087C9680}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{160A9F4F-E1B1-49EE-BFA7-9D50087C9680}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04971C76-1CC7-4697-831F-0469BF9FF3C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04971C76-1CC7-4697-831F-0469BF9FF3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04971C76-1CC7-4697-831F-0469BF9FF3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04971C76-1CC7-4697-831F-0469BF9FF3C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

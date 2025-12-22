@@ -8,9 +8,4 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SharpHabit.Core\SharpHabit.Core.csproj" />
-    <ProjectReference Include="..\SharpHabit.Infrastructure\SharpHabit.Infrastructure.csproj" />
-  </ItemGroup>
-
 </Project>
