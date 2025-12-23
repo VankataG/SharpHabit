@@ -4,11 +4,19 @@ namespace SharpHabit.Wpf.ViewModels
 {
     public partial class HabitItemViewModel : ObservableObject
     {   
-        public Guid HabitId;
+        public Guid HabitId { get; }
 
-        public required string Name;
+        public string Name { get; } = null!;
 
         [ObservableProperty]
         private bool isDoneToday;
+
+        public HabitItemViewModel(Guid habitId, string name)
+        {
+            this.HabitId = habitId;
+            this.Name = name;
+        }
+
+
     }
 }
