@@ -5,6 +5,7 @@ namespace SharpHabit.Core
     public sealed class HabitTracker
     {
         private List<Habit> habits = new();
+
         public IReadOnlyList<Habit> Habits => habits;
 
 
