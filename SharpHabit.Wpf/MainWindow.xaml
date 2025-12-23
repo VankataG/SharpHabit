@@ -5,8 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SharpHabit.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Sharp Habit" Height="450" Width="800"
+        xmlns:vm="clr-namespace:SharpHabit.Wpf.ViewModels">
 
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    
+    <Grid>
+        
+        <StackPanel Width="300">
+            <TextBox 
+                Text="{Binding NewHabitName, UpdateSourceTrigger=PropertyChanged}"
+                Margin="0,0,0,8"/>
+
+            <Button 
+                Background="Aqua" 
+                Width="150" 
+                Content="Add habit"
+                Command="{Binding AddHabitCommand}"
+                Margin="0,0,0,12"/>
+
+            <ItemsControl ItemsSource="{Binding Habits}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel Margin="0,4">
+                            <CheckBox IsChecked="{Binding IsDoneToday, Mode=TwoWay}"
+                          Margin="0,0,8,0"
+                          Command="{Binding DataContext.ToggleTodayCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                          CommandParameter="{Binding}" />
+
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </StackPanel>
+        
     </Grid>
 </Window>
