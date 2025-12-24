@@ -56,7 +56,7 @@ namespace SharpHabit.Wpf.ViewModels
         [RelayCommand]
         public void AddHabit()
         {
-            tracker.AddHabit(this.NewHabitName);
+            tracker.AddHabit(this.NewHabitName.Trim());
 
             NewHabitName = "";
 
