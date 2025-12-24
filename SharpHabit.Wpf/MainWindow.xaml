@@ -17,14 +17,14 @@
         <StackPanel Width="300">
             <TextBox 
                 Text="{Binding NewHabitName, UpdateSourceTrigger=PropertyChanged}"
-                Margin="0,0,0,8"/>
+                Margin="0,0,0,8" Height="26"/>
 
             <Button 
                 Background="Aqua" 
                 Width="150" 
                 Content="Add habit"
                 Command="{Binding AddHabitCommand}"
-                Margin="0,0,0,12"/>
+                Margin="0,0,0,12" Height="26" FontFamily="Comic Sans MS" FontSize="14"/>
 
             <ItemsControl ItemsSource="{Binding Habits}">
                 <ItemsControl.ItemTemplate>
