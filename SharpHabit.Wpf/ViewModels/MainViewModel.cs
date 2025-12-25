@@ -7,9 +7,15 @@ namespace SharpHabit.Wpf.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-        private readonly HabitTracker tracker = new HabitTracker();
+        private DateOnly today;
 
-        private DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+        private int year;
+        private int month;
+        private int daysInMonth;
+
+
+
+        private readonly HabitTracker tracker = new HabitTracker();
 
         public ObservableCollection<HabitItemViewModel> Habits { get; } = new();
 
@@ -22,10 +28,23 @@ namespace SharpHabit.Wpf.ViewModels
 
         public double TodayPercentage => this.tracker.DayPercentage(today);
 
+
+        public ObservableCollection<int> MonthDays { get; } = new();
+        public ObservableCollection<MonthRowViewModel> MonthRows { get; } = new();
+
         public MainViewModel()
         {
+            this.today = DateOnly.FromDateTime(DateTime.Now);
+            this.year = today.Year;
+            this.month = today.Month;
+            this.daysInMonth = DateTime.DaysInMonth(year, month);
+
+            RefreshMonthDays();
+
             tracker.AddHabit("Workout");
             tracker.AddHabit("Read");
+
+            RefreshMonthGrid();
 
             RefreshTodayList();
             RefreshStats();
@@ -53,6 +72,37 @@ namespace SharpHabit.Wpf.ViewModels
             OnPropertyChanged(nameof(TodayPercentage));
         }
 
+        public void RefreshMonthDays()
+        {
+            MonthDays.Clear();
+            for (int day = 1; day <= daysInMonth; day++)
+            {
+                MonthDays.Add(day);
+            }
+        }
+
+        public void RefreshMonthGrid()
+        {
+            MonthRows.Clear();
+
+            foreach (var habit in Habits)
+            {
+                MonthRowViewModel monthRow = new(habit.HabitId, habit.Name, year, month, daysInMonth);
+
+                for (int day = 1; day <- daysInMonth; day++)
+                {
+                    DateOnly date = new DateOnly(year, month, day);
+
+                    HabitDayCellViewModel cell = new(habit.HabitId, date);
+                    cell.IsDone = tracker.IsDone(habit.HabitId, date);
+
+                    monthRow.Cells.Add(cell);
+                }
+
+                MonthRows.Add(monthRow);
+            }
+        }
+
         [RelayCommand]
         public void AddHabit()
         {
@@ -62,6 +112,7 @@ namespace SharpHabit.Wpf.ViewModels
 
             RefreshTodayList();
             RefreshStats();
+            RefreshMonthGrid();
         }
 
         [RelayCommand]
@@ -72,6 +123,7 @@ namespace SharpHabit.Wpf.ViewModels
             habit.IsDoneToday = tracker.IsDone(habit.HabitId, today);
 
             RefreshStats();
+            RefreshMonthGrid();
         }
     }
 }
