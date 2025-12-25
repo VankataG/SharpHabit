@@ -85,16 +85,16 @@ namespace SharpHabit.Wpf.ViewModels
         {
             MonthRows.Clear();
 
-            foreach (var habit in Habits)
+            foreach (var habit in tracker.Habits)
             {
-                MonthRowViewModel monthRow = new(habit.HabitId, habit.Name, year, month, daysInMonth);
+                MonthRowViewModel monthRow = new(habit.Id, habit.Name, year, month, daysInMonth);
 
-                for (int day = 1; day <- daysInMonth; day++)
+                for (int day = 1; day <= daysInMonth; day++)
                 {
                     DateOnly date = new DateOnly(year, month, day);
 
-                    HabitDayCellViewModel cell = new(habit.HabitId, date);
-                    cell.IsDone = tracker.IsDone(habit.HabitId, date);
+                    HabitDayCellViewModel cell = new(habit.Id, date);
+                    cell.IsDone = tracker.IsDone(habit.Id, date);
 
                     monthRow.Cells.Add(cell);
                 }
@@ -126,6 +126,7 @@ namespace SharpHabit.Wpf.ViewModels
             RefreshMonthGrid();
         }
 
+        [RelayCommand]
         public void ToggleCell(HabitDayCellViewModel cell)
         {
             tracker.Toggle(cell.HabitId, cell.Date);
