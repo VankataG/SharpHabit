@@ -125,5 +125,15 @@ namespace SharpHabit.Wpf.ViewModels
             RefreshStats();
             RefreshMonthGrid();
         }
+
+        public void ToggleCell(HabitDayCellViewModel cell)
+        {
+            tracker.Toggle(cell.HabitId, cell.Date);
+
+            cell.IsDone = tracker.IsDone(cell.HabitId, cell.Date);
+
+            RefreshStats();
+            RefreshMonthGrid();
+        }
     }
 }
