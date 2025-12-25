@@ -11,10 +11,10 @@
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
-    
+
     <Grid>
-        
-        <StackPanel Width="300">
+
+        <StackPanel Margin="10,0,10,0">
             <Border Background="#1E1E1E" CornerRadius="10" Padding="12" Margin="0,0,0,12">
                 <StackPanel>
                     <TextBlock Foreground="White"
@@ -33,6 +33,80 @@
                 </StackPanel>
             </Border>
 
+
+            <!-- Month header -->
+            <Grid Margin="0,0,0,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Habit" Foreground="Gray"/>
+
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding MonthDays}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Foreground="Gray" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+
+            <ItemsControl ItemsSource="{Binding MonthRows}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                           Text="{Binding HabitName}"
+                           VerticalAlignment="Center"/>
+
+                            <ItemsControl Grid.Column="1" ItemsSource="{Binding Cells}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="1"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="18" Height="18" Margin="2" CornerRadius="3">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="#2A2A2A"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsDone}" Value="True">
+                                                            <Setter Property="Background" Value="#2E7D32"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <Border.InputBindings>
+                                                <MouseBinding MouseAction="LeftClick"
+                                                  Command="{Binding DataContext.ToggleCellCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                  CommandParameter="{Binding}" />
+                                            </Border.InputBindings>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+
             <TextBox 
                 Text="{Binding NewHabitName, UpdateSourceTrigger=PropertyChanged}"
                 Margin="0,0,0,8" Height="26"/>
@@ -43,13 +117,12 @@
                 Content="Add habit"
                 Command="{Binding AddHabitCommand}"
                 Margin="0,0,0,12" Height="26" FontFamily="Comic Sans MS" FontSize="14"/>
-
             <ItemsControl ItemsSource="{Binding Habits}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Padding="6" CornerRadius="6" Margin="0,4">
                             <Border.Style>
-                                <Style TargetType="Border">
+                                <Style TargetType="{x:Type Border}">
                                     <Setter Property="Background" Value="#2A2A2A"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsDoneToday}" Value="True">
@@ -63,7 +136,7 @@
                                 <CheckBox  
                                     IsChecked="{Binding IsDoneToday, Mode=TwoWay}"
                                     Margin="0,0,8,0"
-                                    Command="{Binding DataContext.ToggleTodayCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    Command="{Binding DataContext.ToggleTodayCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                     CommandParameter="{Binding}" />
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Foreground="White"/>
                             </DockPanel>
@@ -74,6 +147,6 @@
             </ItemsControl>
 
         </StackPanel>
-        
+
     </Grid>
 </Window>

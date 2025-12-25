@@ -87,7 +87,7 @@ namespace SharpHabit.Wpf.ViewModels
 
             foreach (var habit in tracker.Habits)
             {
-                MonthRowViewModel monthRow = new(habit.Id, habit.Name, year, month, daysInMonth);
+                MonthRowViewModel monthRow = new(habit.Id, habit.Name);
 
                 for (int day = 1; day <= daysInMonth; day++)
                 {
@@ -123,7 +123,6 @@ namespace SharpHabit.Wpf.ViewModels
             habit.IsDoneToday = tracker.IsDone(habit.HabitId, today);
 
             RefreshStats();
-            RefreshMonthGrid();
         }
 
         [RelayCommand]
@@ -134,7 +133,6 @@ namespace SharpHabit.Wpf.ViewModels
             cell.IsDone = tracker.IsDone(cell.HabitId, cell.Date);
 
             RefreshStats();
-            RefreshMonthGrid();
         }
     }
 }
