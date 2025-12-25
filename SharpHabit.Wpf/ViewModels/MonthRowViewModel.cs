@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SharpHabit.Wpf.ViewModels
 {
-    public class MonthRowViewModel : ObservableObject
+    public class MonthRowViewModel
     {
         public Guid HabitId { get; }
 
@@ -11,7 +11,7 @@ namespace SharpHabit.Wpf.ViewModels
 
         public ObservableCollection<HabitDayCellViewModel> Cells { get; } = new();
 
-        public MonthRowViewModel(Guid habitId, string habitName, int year, int month, int daysInMonth)
+        public MonthRowViewModel(Guid habitId, string habitName)
         {
             this.HabitId = habitId;
             this.HabitName = habitName;
