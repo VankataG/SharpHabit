@@ -6,11 +6,17 @@
         xmlns:local="clr-namespace:SharpHabit.Wpf"
         mc:Ignorable="d"
         Title="Sharp Habit" Height="450" Width="800"
-        xmlns:vm="clr-namespace:SharpHabit.Wpf.ViewModels">
+        xmlns:vm="clr-namespace:SharpHabit.Wpf.ViewModels"
+        xmlns:conv="clr-namespace:SharpHabit.Wpf.Converters">
 
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
+
+    <Window.Resources>
+        <conv:PercentToHeightConverter x:Key="PercentToHeight"/>
+    </Window.Resources>
+    
 
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -106,32 +112,44 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <TextBlock Text="Daily completion" Margin="0,12,0,6" FontSize="16" />
+                <TextBlock Text="Daily completion (chart)" Margin="0,12,0,6" FontSize="16" />
 
-            <ItemsControl ItemsSource="{Binding DayPercents}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel Margin="0,3">
-                            <TextBlock Width="40"
-                       Text="{Binding DayNumber, StringFormat=Day {0}}"
-                       VerticalAlignment="Center"
-                       Foreground="Gray"/>
+                <Border Background="#141414" CornerRadius="10" Padding="12">
+                    <Grid Height="140">
+                        <!-- baseline -->
+                        <Border VerticalAlignment="Bottom" Height="1" Background="#333"/>
 
-                            <ProgressBar 
-                                Height="14"
-                                Minimum="0" Maximum="100"
-                                Value="{Binding Percent, Mode=OneWay}"
-                                Margin="8,0,8,0"/>
+                        <ItemsControl ItemsSource="{Binding DayPercents}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Rows="1"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
 
-                            <TextBlock 
-                                Width="50"
-                                Text="{Binding Percent, Mode=OneWay, StringFormat={}{0:0}%}"
-                                VerticalAlignment="Center"
-                                Foreground="Gray"/>
-                        </DockPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid VerticalAlignment="Bottom">
+                                        <Border Width="10"
+                                CornerRadius="2"
+                                VerticalAlignment="Bottom"
+                                Height="{Binding Percent, Converter={StaticResource PercentToHeight}}"
+                                Background="#2E7D32"
+                                Margin="2,0"/>
+
+                                        <!-- optional: show day number below -->
+                                        <!--<TextBlock Text="{Binding DayNumber}"
+                                   Foreground="Gray"
+                                   FontSize="10"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   Margin="0,0,0,-16"/>-->
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+
 
 
             <TextBox 
