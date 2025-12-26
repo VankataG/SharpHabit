@@ -20,22 +20,59 @@
 
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="10,0,10,0">
-            <Border Background="#1E1E1E" CornerRadius="10" Padding="12" Margin="0,0,0,12">
+            <StackPanel Margin="10,0,10,0">
+
+                <Border Background="White" CornerRadius="12" Padding="12" Margin="0,0,0,12">
                 <StackPanel>
-                    <TextBlock Foreground="White"
-                   Text="{Binding DoneHabits, Mode=OneWay, StringFormat=Done today: {0}}" />
+                    <TextBlock Text="Monthly completion" FontSize="16" FontWeight="SemiBold" Foreground="#1B2A41"/>
 
-                    <TextBlock Foreground="White"
-                   Text="{Binding TotalHabits, Mode=OneWay, StringFormat=Total habits: {0}}"
-                   Margin="0,4,0,0"/>
+                    <!-- chart surface -->
+                    <Grid Height="160" Margin="0,10,0,0">
+                        <Border Background="#F3F6FB" CornerRadius="10"/>
 
-                    <ProgressBar Height="16" Margin="0,10,0,0"
-                     Minimum="0" Maximum="100"
-                     Value="{Binding TodayPercentage, Mode=OneWay}" />
+                        <!-- baseline -->
+                        <Border Height="1" Background="#D6DEEA" VerticalAlignment="Bottom" Margin="10,0,10,10"/>
 
-                    <TextBlock Foreground="White" Margin="0,6,0,0"
-                   Text="{Binding TodayPercentage, Mode=OneWay, StringFormat=Today: {0:0}%}" />
+                        <Canvas x:Name="ChartCanvas" Margin="10">
+                            <Polygon x:Name="AreaFill" Fill="#A8C7FF" Opacity="0.35"/>
+                            <Polyline x:Name="LineStroke" Stroke="#2B6CB0" StrokeThickness="2"/>
+                        </Canvas>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+                <Border Background="White" CornerRadius="12" Padding="12" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="Monthly completion" FontSize="16" FontWeight="SemiBold" Foreground="#1B2A41"/>
+
+                        <Border Background="#F3F6FB" CornerRadius="10" Padding="10" Margin="0,10,0,0">
+                            <Grid Height="140">
+                                <Border VerticalAlignment="Bottom" Height="1" Background="#D6DEEA"/>
+
+                                <ItemsControl ItemsSource="{Binding DayPercents}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Rows="1"/>
+                                        </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid VerticalAlignment="Bottom">
+                                            <Border 
+                                                Width="10"
+                                                CornerRadius="2"
+                                                VerticalAlignment="Bottom"
+                                                Height="{Binding Percent, Converter={StaticResource PercentToHeight}}"
+                                                Background="#2B6CB0"
+                                                Margin="2,0"
+                                                ToolTip="{Binding Percent, StringFormat={}{0:0}%}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
                 </StackPanel>
             </Border>
 
@@ -156,43 +193,14 @@
                 Text="{Binding NewHabitName, UpdateSourceTrigger=PropertyChanged}"
                 Margin="0,0,0,8" Height="26"/>
 
-            <Button 
+                <Button 
                 Background="Aqua" 
                 Width="150" 
                 Content="Add habit"
                 Command="{Binding AddHabitCommand}"
                 Margin="0,0,0,12" Height="26" FontFamily="Comic Sans MS" FontSize="14"/>
-            
-            <ItemsControl ItemsSource="{Binding Habits}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Padding="6" CornerRadius="6" Margin="0,4">
-                            <Border.Style>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="Background" Value="#2A2A2A"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDoneToday}" Value="True">
-                                            <Setter Property="Background" Value="#2E7D32"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
 
-                            <DockPanel>
-                                <CheckBox  
-                                    IsChecked="{Binding IsDoneToday, Mode=TwoWay}"
-                                    Margin="0,0,8,0"
-                                    Command="{Binding DataContext.ToggleTodayCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                    CommandParameter="{Binding}" />
-                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Foreground="White"/>
-                            </DockPanel>
-                        </Border>
-
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-        </StackPanel>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </Window>
