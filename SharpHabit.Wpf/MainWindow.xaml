@@ -13,7 +13,7 @@
     </Window.DataContext>
 
     <Grid>
-
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="10,0,10,0">
             <Border Background="#1E1E1E" CornerRadius="10" Padding="12" Margin="0,0,0,12">
                 <StackPanel>
@@ -147,6 +147,6 @@
             </ItemsControl>
 
         </StackPanel>
-
+        </ScrollViewer>
     </Grid>
 </Window>
