@@ -32,6 +32,10 @@ namespace SharpHabit.Wpf.ViewModels
         public ObservableCollection<int> MonthDays { get; } = new();
         public ObservableCollection<MonthRowViewModel> MonthRows { get; } = new();
 
+
+        public ObservableCollection<DayPercentViewModel> DayPercents { get; } = new();
+
+
         public MainViewModel()
         {
             this.today = DateOnly.FromDateTime(DateTime.Now);
@@ -45,6 +49,7 @@ namespace SharpHabit.Wpf.ViewModels
             tracker.AddHabit("Read");
 
             RefreshMonthGrid();
+            RefreshDayPercents();
 
             RefreshTodayList();
             RefreshStats();
@@ -103,6 +108,25 @@ namespace SharpHabit.Wpf.ViewModels
             }
         }
 
+
+        public void RefreshDayPercents()
+        {
+            this.DayPercents.Clear();
+
+            for ( int day = 1; day <= daysInMonth; day++)
+            {
+                DateOnly date = new DateOnly(year, month, day);
+
+                DayPercentViewModel dayPercent = new(day);
+
+                dayPercent.Percent = tracker.DayPercentage(date);
+
+                this.DayPercents.Add(dayPercent);
+            }
+
+        }
+
+
         [RelayCommand]
         public void AddHabit()
         {
@@ -113,6 +137,7 @@ namespace SharpHabit.Wpf.ViewModels
             RefreshTodayList();
             RefreshStats();
             RefreshMonthGrid();
+            RefreshDayPercents();
         }
 
         [RelayCommand]
@@ -123,6 +148,7 @@ namespace SharpHabit.Wpf.ViewModels
             habit.IsDoneToday = tracker.IsDone(habit.HabitId, today);
 
             RefreshStats();
+            
         }
 
         [RelayCommand]
@@ -133,6 +159,7 @@ namespace SharpHabit.Wpf.ViewModels
             cell.IsDone = tracker.IsDone(cell.HabitId, cell.Date);
 
             RefreshStats();
+            RefreshDayPercents();
         }
     }
 }
