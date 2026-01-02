@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Security.Policy;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SharpHabit.Core;
@@ -10,10 +11,11 @@ namespace SharpHabit.Wpf.ViewModels
     public partial class MainViewModel : ObservableObject
     {
         private DateOnly today;
-
-        private int year;
-        private int month;
-        private int daysInMonth;
+        private DateOnly currentMonth;
+        public string CurrentMonthText => currentMonth.ToString("MMMM yyyy");
+        private int Year => currentMonth.Year;
+        private int Month => currentMonth.Month;
+        private int DaysInMonth => DateTime.DaysInMonth(Year, Month);
 
 
 
@@ -42,9 +44,7 @@ namespace SharpHabit.Wpf.ViewModels
         public MainViewModel()
         {
             this.today = DateOnly.FromDateTime(DateTime.Now);
-            this.year = today.Year;
-            this.month = today.Month;
-            this.daysInMonth = DateTime.DaysInMonth(year, month);
+            this.currentMonth = new DateOnly(today.Year, today.Month, 1);
 
             TrackerState? state = storage.Load();
             if (state != null)
@@ -60,84 +60,22 @@ namespace SharpHabit.Wpf.ViewModels
                 tracker.AddHabit("Study");
             }
 
+            RefreshForMonth();
+        }
+
+
+        public void RefreshForMonth()
+        {
             RefreshMonthDays();
             RefreshMonthGrid();
             RefreshDayPercents();
-            RefreshTodayList();
+            OnPropertyChanged(nameof(CurrentMonthText));
+
             RefreshStats();
         }
 
-
-        public void RefreshTodayList()
-        {
-            Habits.Clear();
-
-            foreach (var habit in tracker.Habits)
-            {
-                HabitItemViewModel habitVM = new(habit.Id, habit.Name);
-
-                habitVM.IsDoneToday = tracker.IsDone(habit.Id, today);
-
-                Habits.Add(habitVM);
-            }
-        }
-
-        public void RefreshStats()
-        {
-            OnPropertyChanged(nameof(TotalHabits));
-            OnPropertyChanged(nameof(DoneHabits));
-            OnPropertyChanged(nameof(TodayPercentage));
-        }
-
-        public void RefreshMonthDays()
-        {
-            MonthDays.Clear();
-            for (int day = 1; day <= daysInMonth; day++)
-            {
-                MonthDays.Add(day);
-            }
-        }
-
-        public void RefreshMonthGrid()
-        {
-            MonthRows.Clear();
-
-            foreach (var habit in tracker.Habits)
-            {
-                MonthRowViewModel monthRow = new(habit.Id, habit.Name);
-
-                for (int day = 1; day <= daysInMonth; day++)
-                {
-                    DateOnly date = new DateOnly(year, month, day);
-
-                    HabitDayCellViewModel cell = new(habit.Id, date);
-                    cell.IsDone = tracker.IsDone(habit.Id, date);
-
-                    monthRow.Cells.Add(cell);
-                }
-
-                MonthRows.Add(monthRow);
-            }
-        }
-
-
-        public void RefreshDayPercents()
-        {
-            this.DayPercents.Clear();
-
-            for ( int day = 1; day <= daysInMonth; day++)
-            {
-                DateOnly date = new DateOnly(year, month, day);
-
-                DayPercentViewModel dayPercent = new(day);
-
-                dayPercent.Percent = tracker.DayPercentage(date);
-
-                this.DayPercents.Add(dayPercent);
-            }
-
-        }
-
+        
+        //Commands
 
         [RelayCommand]
         public void AddHabit()
@@ -146,7 +84,6 @@ namespace SharpHabit.Wpf.ViewModels
 
             NewHabitName = "";
 
-            RefreshTodayList();
             RefreshStats();
             RefreshMonthGrid();
             RefreshDayPercents();
@@ -177,6 +114,84 @@ namespace SharpHabit.Wpf.ViewModels
             RefreshDayPercents();
 
             this.storage.Save(tracker.ExportState());
+        }
+
+        [RelayCommand]
+        public void PrevMonth()
+        {
+            DateTime dt = new DateTime(Year, Month, 1);
+            dt = dt.AddMonths(-1);
+            currentMonth = new DateOnly(dt.Year, dt.Month, 1);
+
+            RefreshForMonth();
+        }
+
+        [RelayCommand]
+        public void NextMonth()
+        {
+            DateTime dt = new DateTime(Year, Month, 1);
+            dt = dt.AddMonths(+1);
+            currentMonth = new DateOnly(dt.Year, dt.Month, 1);
+
+            RefreshForMonth();
+        }
+
+
+
+        //Refresh methods
+        public void RefreshStats()
+        {
+            OnPropertyChanged(nameof(TotalHabits));
+            OnPropertyChanged(nameof(DoneHabits));
+            OnPropertyChanged(nameof(TodayPercentage));
+        }
+
+        public void RefreshMonthDays()
+        {
+            MonthDays.Clear();
+            for (int day = 1; day <= DaysInMonth; day++)
+            {
+                MonthDays.Add(day);
+            }
+        }
+
+        public void RefreshMonthGrid()
+        {
+            MonthRows.Clear();
+
+            foreach (var habit in tracker.Habits)
+            {
+                MonthRowViewModel monthRow = new(habit.Id, habit.Name);
+
+                for (int day = 1; day <= DaysInMonth; day++)
+                {
+                    DateOnly date = new DateOnly(Year, Month, day);
+
+                    HabitDayCellViewModel cell = new(habit.Id, date);
+                    cell.IsDone = tracker.IsDone(habit.Id, date);
+
+                    monthRow.Cells.Add(cell);
+                }
+
+                MonthRows.Add(monthRow);
+            }
+        }
+
+        public void RefreshDayPercents()
+        {
+            this.DayPercents.Clear();
+
+            for (int day = 1; day <= DaysInMonth; day++)
+            {
+                DateOnly date = new DateOnly(Year, Month, day);
+
+                DayPercentViewModel dayPercent = new(day);
+
+                dayPercent.Percent = tracker.DayPercentage(date);
+
+                this.DayPercents.Add(dayPercent);
+            }
+
         }
     }
 }

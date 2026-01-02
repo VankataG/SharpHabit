@@ -22,13 +22,22 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="10,0,10,0">
 
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Center">
+                    <Button Content="◀ Prev" Width="65" Command="{Binding PrevMonthCommand}" />
+                    <TextBlock Text="{Binding CurrentMonthText}" 
+                               FontSize="16" FontWeight="SemiBold"
+                               Margin="10,0" VerticalAlignment="Center"/>
+                    <Button Content="Next ▶" Width="65" Command="{Binding NextMonthCommand}" />
+                </StackPanel>
+
                 <Border Background="White" CornerRadius="12" Padding="12" Margin="0,0,0,12">
                     <StackPanel>
                         <TextBlock Text="Monthly completion" FontSize="16" FontWeight="SemiBold" Foreground="#1B2A41"/>
 
-                        <Border Background="#F3F6FB" CornerRadius="10" Padding="10" Margin="0,10,0,0">
+                        <Border Background="#F3F6FB" BorderBrush="#D6DEEA" BorderThickness="1" CornerRadius="10" Padding="10" Margin="0,10,0,0">
                             <Grid Height="140" Background="#E1E7F0" VerticalAlignment="Center">
-                                <Border VerticalAlignment="Bottom" Height="1" Background="#D6DEEA"/>
+
+                                <Border Background="#D6DEEA" Height="1" VerticalAlignment="Bottom" Opacity="0.8"/>
 
                                 <ItemsControl ItemsSource="{Binding DayPercents}">
                                     <ItemsControl.ItemsPanel>
@@ -139,12 +148,55 @@
     
                                                                 <!-- Hover-->
                                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                                    <Setter Property="BorderBrush" Value="#2B6CB0"/>
+                                                                    <Setter Property="BorderBrush" Value="#2E7D32"/>
+
+                                                                    <Trigger.EnterActions>
+                                                                        <BeginStoryboard>
+                                                                            <Storyboard>
+                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                                 To="1.08" 
+                                                                                                 Duration="0:0:0.08"/>
+                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                                 To="1.08" 
+                                                                                                 Duration="0:0:0.08"/>
+                                                                            </Storyboard>
+                                                                        </BeginStoryboard>
+                                                                    </Trigger.EnterActions>
+
+                                                                    <Trigger.ExitActions>
+                                                                        <BeginStoryboard>
+                                                                            <Storyboard>
+                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                                 To="1" 
+                                                                                                 Duration="0:0:0.08"/>
+                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                                 To="1" 
+                                                                                                 Duration="0:0:0.08"/>
+                                                                            </Storyboard>
+                                                                        </BeginStoryboard>
+                                                                    </Trigger.ExitActions>
                                                                 </Trigger>
                                                             </Style.Triggers>
                                                         </Style>
                                                     </Border.Style>
 
+                                                    <Border.Triggers>
+                                                        <EventTrigger RoutedEvent="MouseLeftButtonDown">
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                                     To="0.6"
+                                                                                     Duration="0:0:0.05"
+                                                                                     AutoReverse="True"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </EventTrigger>
+                                                    </Border.Triggers>
+
+                                                    <Border.RenderTransform>
+                                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                                    </Border.RenderTransform>
+                                                    <Border.RenderTransformOrigin>0.5,0.5</Border.RenderTransformOrigin>
 
                                                     <Border.InputBindings>
                                                         <MouseBinding MouseAction="LeftClick"
