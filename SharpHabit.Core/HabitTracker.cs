@@ -1,4 +1,5 @@
 ﻿using SharpHabit.Core.Models;
+using SharpHabit.Core.Storage;
 
 namespace SharpHabit.Core
 {
@@ -136,6 +137,35 @@ namespace SharpHabit.Core
             if (habits.Count == 0) return false;
 
             return true;
+        }
+
+        // Storage methods
+        public TrackerState ExportState()
+        {
+            TrackerState state = new TrackerState();
+
+            state.Habits = this.Habits.Select(h => new HabitDto(h.Id, h.Name)).ToList();
+            state.Done = this.done.Select(h => new DoneDto(h.HabitId, h.Date)).ToList();
+
+            return state;
+        }
+
+        public void ImportState(TrackerState state)
+        {
+            this.habits.Clear();
+            this.done.Clear();
+
+            foreach (HabitDto h in state.Habits)
+            {
+                Habit habit = new Habit() { Id = h.Id, Name = h.Name, };
+
+                this.habits.Add(habit);
+            }
+
+            foreach (DoneDto h in state.Done)
+            {
+                this.done.Add((h.HabitId, h.Date));
+            }
         }
     }
 }
