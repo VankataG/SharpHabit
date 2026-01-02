@@ -23,30 +23,11 @@
             <StackPanel Margin="10,0,10,0">
 
                 <Border Background="White" CornerRadius="12" Padding="12" Margin="0,0,0,12">
-                <StackPanel>
-                    <TextBlock Text="Monthly completion" FontSize="16" FontWeight="SemiBold" Foreground="#1B2A41"/>
-
-                    <!-- chart surface -->
-                    <Grid Height="160" Margin="0,10,0,0">
-                        <Border Background="#F3F6FB" CornerRadius="10"/>
-
-                        <!-- baseline -->
-                        <Border Height="1" Background="#D6DEEA" VerticalAlignment="Bottom" Margin="10,0,10,10"/>
-
-                        <Canvas x:Name="ChartCanvas" Margin="10">
-                            <Polygon x:Name="AreaFill" Fill="#A8C7FF" Opacity="0.35"/>
-                            <Polyline x:Name="LineStroke" Stroke="#2B6CB0" StrokeThickness="2"/>
-                        </Canvas>
-                    </Grid>
-                </StackPanel>
-            </Border>
-
-                <Border Background="White" CornerRadius="12" Padding="12" Margin="0,0,0,12">
                     <StackPanel>
                         <TextBlock Text="Monthly completion" FontSize="16" FontWeight="SemiBold" Foreground="#1B2A41"/>
 
                         <Border Background="#F3F6FB" CornerRadius="10" Padding="10" Margin="0,10,0,0">
-                            <Grid Height="140">
+                            <Grid Height="140" Background="#E1E7F0" VerticalAlignment="Center">
                                 <Border VerticalAlignment="Bottom" Height="1" Background="#D6DEEA"/>
 
                                 <ItemsControl ItemsSource="{Binding DayPercents}">
@@ -54,151 +35,147 @@
                                         <ItemsPanelTemplate>
                                             <UniformGrid Rows="1"/>
                                         </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
+                                    </ItemsControl.ItemsPanel>
 
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid VerticalAlignment="Bottom">
-                                            <Border 
-                                                Width="10"
-                                                CornerRadius="2"
-                                                VerticalAlignment="Bottom"
-                                                Height="{Binding Percent, Converter={StaticResource PercentToHeight}}"
-                                                Background="#2B6CB0"
-                                                Margin="2,0"
-                                                ToolTip="{Binding Percent, StringFormat={}{0:0}%}"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </Grid>
-                    </Border>
-                </StackPanel>
-            </Border>
-
-
-            <!-- Month header -->
-            <Grid Margin="0,0,0,6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" Text="Habit" Foreground="Gray"/>
-
-                <ItemsControl Grid.Column="1" ItemsSource="{Binding MonthDays}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Rows="1"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" Foreground="Gray" HorizontalAlignment="Center"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Grid>
-
-            <ItemsControl ItemsSource="{Binding MonthRows}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0"
-                           Text="{Binding HabitName}"
-                           VerticalAlignment="Center"/>
-
-                            <ItemsControl Grid.Column="1" ItemsSource="{Binding Cells}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <UniformGrid Rows="1"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Width="18" Height="18" Margin="2" CornerRadius="3">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="Background" Value="#2A2A2A"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsDone}" Value="True">
-                                                            <Setter Property="Background" Value="#2E7D32"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-
-                                            <Border.InputBindings>
-                                                <MouseBinding MouseAction="LeftClick"
-                                                  Command="{Binding DataContext.ToggleCellCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                  CommandParameter="{Binding}" />
-                                            </Border.InputBindings>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-                <TextBlock Text="Daily completion (chart)" Margin="0,12,0,6" FontSize="16" />
-
-                <Border Background="#141414" CornerRadius="10" Padding="12">
-                    <Grid Height="140">
-                        <!-- baseline -->
-                        <Border VerticalAlignment="Bottom" Height="1" Background="#333"/>
-
-                        <ItemsControl ItemsSource="{Binding DayPercents}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Rows="1"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid VerticalAlignment="Bottom">
-                                        <Border Width="10"
-                                CornerRadius="2"
-                                VerticalAlignment="Bottom"
-                                Height="{Binding Percent, Converter={StaticResource PercentToHeight}}"
-                                Background="#2E7D32"
-                                Margin="2,0"/>
-
-                                        <!-- optional: show day number below -->
-                                        <!--<TextBlock Text="{Binding DayNumber}"
-                                   Foreground="Gray"
-                                   FontSize="10"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Bottom"
-                                   Margin="0,0,0,-16"/>-->
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </Grid>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid VerticalAlignment="Bottom">
+                                                <Border 
+                                                    Width="6"
+                                                    CornerRadius="2"
+                                                    VerticalAlignment="Bottom"
+                                                    Height="{Binding Percent, Converter={StaticResource PercentToHeight}}"
+                                                    Background="#2E7D32"
+                                                    Margin="1,0"
+                                                    ToolTip="{Binding Percent, StringFormat={}{0:0}%}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
                 </Border>
 
 
+                <!-- Month header -->
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <TextBox 
-                Text="{Binding NewHabitName, UpdateSourceTrigger=PropertyChanged}"
-                Margin="0,0,0,8" Height="26"/>
+                    
+
+                    <ItemsControl Grid.Column="1" ItemsSource="{Binding MonthDays}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="1"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Foreground="Gray" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+
+                <ItemsControl ItemsSource="{Binding MonthRows}" AlternationCount="2">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="4" CornerRadius="6" BorderThickness="1" BorderBrush="#E5EAF2">
+
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="Transparent"/>
+
+                                        <Style.Triggers>
+                                            <DataTrigger Value="1">
+                                                <DataTrigger.Binding>
+                                                    <Binding Path="(ItemsControl.AlternationIndex)"
+                                                             RelativeSource="{RelativeSource AncestorType=ContentPresenter}"/>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Background" Value="#E1E7F0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0"
+                                        Text="{Binding HabitName}"
+                                        FontWeight="Bold"
+                                        Padding="20,0,0,0"
+                                        VerticalAlignment="Center"/>
+
+                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding Cells}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Rows="1"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Width="18" Height="18" Margin="2" CornerRadius="3" Cursor="Hand" ToolTip="{Binding Date}">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="Gray"/>
+                                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                                            <Setter Property="BorderThickness" Value="1"/>
+
+                                                            <Style.Triggers>
+                                                                <!-- Done-->
+                                                                <DataTrigger Binding="{Binding IsDone}" Value="True">
+                                                                    <Setter Property="Background" Value="#2E7D32"/>
+                                                                </DataTrigger>
+    
+                                                                <!-- Hover-->
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="BorderBrush" Value="#2B6CB0"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+
+
+                                                    <Border.InputBindings>
+                                                        <MouseBinding MouseAction="LeftClick"
+                                                          Command="{Binding DataContext.ToggleCellCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                          CommandParameter="{Binding}" />
+                                                    </Border.InputBindings>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBox 
+                    Text="{Binding NewHabitName, UpdateSourceTrigger=PropertyChanged}"
+                    Margin="0,0,0,8" Height="26"/>
 
                 <Button 
-                Background="Aqua" 
-                Width="150" 
-                Content="Add habit"
-                Command="{Binding AddHabitCommand}"
-                Margin="0,0,0,12" Height="26" FontFamily="Comic Sans MS" FontSize="14"/>
+                    
+                    Background="#2E7D32"
+                    Width="150" 
+                    Content="Add habit"
+                    Command="{Binding AddHabitCommand}"
+                    Margin="0,0,0,12" 
+                    Height="26" 
+                    FontFamily="Arial" 
+                    FontSize="14"
+                    />
 
             </StackPanel>
         </ScrollViewer>
