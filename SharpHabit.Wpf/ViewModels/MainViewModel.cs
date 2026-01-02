@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SharpHabit.Core;
+using SharpHabit.Core.Storage;
+using SharpHabit.Infrastructure;
 
 namespace SharpHabit.Wpf.ViewModels
 {
@@ -16,6 +18,7 @@ namespace SharpHabit.Wpf.ViewModels
 
 
         private readonly HabitTracker tracker = new HabitTracker();
+        private readonly JsonStateStorage storage = new JsonStateStorage();
 
         public ObservableCollection<HabitItemViewModel> Habits { get; } = new();
 
@@ -43,14 +46,23 @@ namespace SharpHabit.Wpf.ViewModels
             this.month = today.Month;
             this.daysInMonth = DateTime.DaysInMonth(year, month);
 
+            TrackerState? state = storage.Load();
+            if (state != null)
+            {
+                this.tracker.ImportState(state);
+            }
+            else
+            {
+                tracker.AddHabit("Get Up Early");
+                tracker.AddHabit("Brush Teeth");
+                tracker.AddHabit("Read Book");
+                tracker.AddHabit("Workout");
+                tracker.AddHabit("Study");
+            }
+
             RefreshMonthDays();
-
-            tracker.AddHabit("Workout");
-            tracker.AddHabit("Read");
-
             RefreshMonthGrid();
             RefreshDayPercents();
-
             RefreshTodayList();
             RefreshStats();
         }
@@ -138,6 +150,8 @@ namespace SharpHabit.Wpf.ViewModels
             RefreshStats();
             RefreshMonthGrid();
             RefreshDayPercents();
+
+            this.storage.Save(tracker.ExportState());
         }
 
         [RelayCommand]
@@ -148,7 +162,8 @@ namespace SharpHabit.Wpf.ViewModels
             habit.IsDoneToday = tracker.IsDone(habit.HabitId, today);
 
             RefreshStats();
-            
+
+            this.storage.Save(tracker.ExportState());
         }
 
         [RelayCommand]
@@ -160,6 +175,8 @@ namespace SharpHabit.Wpf.ViewModels
 
             RefreshStats();
             RefreshDayPercents();
+
+            this.storage.Save(tracker.ExportState());
         }
     }
 }
