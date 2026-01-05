@@ -92,6 +92,18 @@ namespace SharpHabit.Wpf.ViewModels
         }
 
         [RelayCommand]
+        public void RemoveHabit(MonthRowViewModel habitRow)
+        {
+            tracker.RemoveHabit(habitRow.HabitId);
+
+            RefreshStats();
+            RefreshMonthGrid();
+            RefreshDayPercents();
+
+            this.storage.Save(tracker.ExportState());
+        }
+
+        [RelayCommand]
         public void ToggleToday(HabitItemViewModel habit)
         {
             tracker.Toggle(habit.HabitId, today);
