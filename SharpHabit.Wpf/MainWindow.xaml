@@ -142,77 +142,100 @@
 
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Border Width="18" Height="18" Margin="2" CornerRadius="3" Cursor="Hand" ToolTip="{Binding Date}">
-                                                    <Border.Style>
-                                                        <Style TargetType="Border">
-                                                            <Setter Property="Background" Value="Gray"/>
-                                                            <Setter Property="BorderBrush" Value="Transparent"/>
-                                                            <Setter Property="BorderThickness" Value="1"/>
+                                                <Grid Width="22" Height="22">
+                                                    <!-- Today column background (behind the cell) -->
+                                                    <Border x:Name="TodayBg" CornerRadius="4">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Background" Value="Transparent"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                                                        <Setter Property="Background" Value="LightBlue"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                    </Border>
 
-                                                            <Style.Triggers>
-                                                                <!-- Done-->
-                                                                <DataTrigger Binding="{Binding IsDone}" Value="True">
-                                                                    <Setter Property="Background" Value="#2E7D32"/>
-                                                                </DataTrigger>
-    
-                                                                <!-- Hover-->
-                                                                <Trigger Property="IsMouseOver" Value="True">
-                                                                    <Setter Property="BorderBrush" Value="#2E7D32"/>
 
-                                                                    <Trigger.EnterActions>
-                                                                        <BeginStoryboard>
-                                                                            <Storyboard>
-                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                                                                                 To="1.08" 
-                                                                                                 Duration="0:0:0.08"/>
-                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                                                                 To="1.08" 
-                                                                                                 Duration="0:0:0.08"/>
-                                                                            </Storyboard>
-                                                                        </BeginStoryboard>
-                                                                    </Trigger.EnterActions>
+                                                    <!-- Actual cell (your old Border, almost unchanged) -->
+                                                    <Border Width="18" Height="18" Margin="2"
+                                                        CornerRadius="3"
+                                                        Cursor="Hand"
+                                                        ToolTip="{Binding Date}">
 
-                                                                    <Trigger.ExitActions>
-                                                                        <BeginStoryboard>
-                                                                            <Storyboard>
-                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                                                                                 To="1" 
-                                                                                                 Duration="0:0:0.08"/>
-                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                                                                 To="1" 
-                                                                                                 Duration="0:0:0.08"/>
-                                                                            </Storyboard>
-                                                                        </BeginStoryboard>
-                                                                    </Trigger.ExitActions>
-                                                                </Trigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Border.Style>
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Background" Value="LightGray"/>
+                                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                                                <Setter Property="BorderThickness" Value="1"/>
 
-                                                    <Border.Triggers>
-                                                        <EventTrigger RoutedEvent="MouseLeftButtonDown">
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                                                     To="0.6"
-                                                                                     Duration="0:0:0.05"
-                                                                                     AutoReverse="True"/>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </EventTrigger>
-                                                    </Border.Triggers>
+                                                                <Style.Triggers>
+                                                                    <!-- Done -->
+                                                                    <DataTrigger Binding="{Binding IsDone}" Value="True">
+                                                                        <Setter Property="Background" Value="#2E7D32"/>
+                                                                    </DataTrigger>
 
-                                                    <Border.RenderTransform>
-                                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
-                                                    </Border.RenderTransform>
-                                                    <Border.RenderTransformOrigin>0.5,0.5</Border.RenderTransformOrigin>
+                                                                    <!-- Hover -->
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="BorderBrush" Value="#2E7D32"/>
 
-                                                    <Border.InputBindings>
-                                                        <MouseBinding MouseAction="LeftClick"
-                                                          Command="{Binding DataContext.ToggleCellCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                          CommandParameter="{Binding}" />
-                                                    </Border.InputBindings>
-                                                </Border>
+                                                                        <Trigger.EnterActions>
+                                                                            <BeginStoryboard>
+                                                                                <Storyboard>
+                                                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                         To="1.08"
+                                                                                         Duration="0:0:0.08"/>
+                                                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                        To="1.08"
+                                                                                        Duration="0:0:0.08"/>
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </Trigger.EnterActions>
+
+                                                                        <Trigger.ExitActions>
+                                                                            <BeginStoryboard>
+                                                                                <Storyboard>
+                                                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                           To="1"
+                                                                                           Duration="0:0:0.08"/>
+                                                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                           To="1"
+                                                                                           Duration="0:0:0.08"/>
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </Trigger.ExitActions>
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+
+                                                        <Border.Triggers>
+                                                            <EventTrigger RoutedEvent="MouseLeftButtonDown">
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                            To="0.6"
+                                                                            Duration="0:0:0.05"
+                                                                            AutoReverse="True"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </EventTrigger>
+                                                        </Border.Triggers>
+
+                                                        <Border.RenderTransform>
+                                                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                                        </Border.RenderTransform>
+                                                        <Border.RenderTransformOrigin>0.5,0.5</Border.RenderTransformOrigin>
+
+                                                        <Border.InputBindings>
+                                                            <MouseBinding MouseAction="LeftClick"
+                                                                Command="{Binding DataContext.ToggleCellCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                CommandParameter="{Binding}" />
+                                                        </Border.InputBindings>
+                                                    </Border>
+                                                </Grid>
+
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
