@@ -8,13 +8,16 @@ namespace SharpHabit.Wpf.ViewModels
 
         public DateOnly Date { get; }
 
+        public bool IsToday { get; }
+
         [ObservableProperty]
         private bool isDone;
 
-        public HabitDayCellViewModel(Guid habitId, DateOnly date)
+        public HabitDayCellViewModel(Guid habitId, DateOnly date, bool isToday)
         {
             this.HabitId = habitId;
             this.Date = date;
+            this.IsToday = isToday;
         }
     }
 }
