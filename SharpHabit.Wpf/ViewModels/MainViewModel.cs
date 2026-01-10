@@ -178,8 +178,9 @@ namespace SharpHabit.Wpf.ViewModels
                 for (int day = 1; day <= DaysInMonth; day++)
                 {
                     DateOnly date = new DateOnly(Year, Month, day);
+                    bool isToday = (date == today);
 
-                    HabitDayCellViewModel cell = new(habit.Id, date);
+                    HabitDayCellViewModel cell = new(habit.Id, date, isToday);
                     cell.IsDone = tracker.IsDone(habit.Id, date);
 
                     monthRow.Cells.Add(cell);
