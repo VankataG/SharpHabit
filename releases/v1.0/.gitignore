@@ -1,0 +1,5 @@
+# Ignore everything in app folder
+app/*
+
+# But allow zip files
+!*.zip
